@@ -7,7 +7,7 @@ interface SidebarMenuProps {
 const SidebarMenu: React.FC<SidebarMenuProps> = ({ menuItems }) => {
   return (
     <div className="bg-white rounded shadow p-4">
-      <h6>Sponsered Event</h6>
+      <h2>Sponsered Events</h2>
       {menuItems.map((item, index) => (
         <button
           key={index}

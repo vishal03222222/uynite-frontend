@@ -20,7 +20,7 @@ function App() {
         <Route path="/reports" element={<Reports />} />
         <Route path="/support" element={<Support />} />
         <Route path="/blocked-users" element={<BlockedUsers />} />
-        <Route path="/Create-Event" element={<SponsoredEventForm/>} />
+        <Route path="/create-event" element={<SponsoredEventForm />} />
       </Routes>
     </Router>
   );
