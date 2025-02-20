@@ -5,29 +5,27 @@ import SidebarMenu from "../SidebarMenu";
 import EventCard from "../EventCard";
 import { useNavigate } from "react-router-dom";
 import SponsoredEventForm from "./CreateEvent";
-
+// const SponsoredEvent: React.FC = () => {
 //   const breadcrumbLinks = [
 //     { label: "Dashboard", path: "/" },
 //     { label: "Sponsored Event", path: "/sponsored-event" },
 //   ];
 //   const [upcomingevent, setupcomingevent] = useState([]);
 
-
 //   const [activeMenu, setActiveMenu] = useState("Create Event and list");
 
 //   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
-//   //const [isModalOpen, setIsModalOpen] = useState(true);
 //   const [visibleEvents, setVisibleEvents] = useState<{ title: string; location: string; category: string }[]>([]);
 //   const [showForm, setShowForm] = useState(false);
 
-//   const allEvents = [
+//   const [allEvents, setAllEvents] = useState([
 //     { title: "Cute Baby Contest", location: "All Countries", category: "Up Comming Events" },
 //     { title: "Best Photography Contest", location: "Japan", category: "On Going Event" },
 //     { title: "Beauty Contest", location: "2+ Countries", category: "Completed Events" },
 //     { title: "Music Fest 2024", location: "USA", category: "Up Comming Events" },
 //     { title: "Tech Innovation Awards", location: "India", category: "Completed Events" },
 //     { title: "Startup Pitch Fest", location: "Europe", category: "On Going Event" },
-//   ];
+//   ]);
 
 //   useEffect(() => {
 //     if (activeMenu === "Create Event and list") {
@@ -36,7 +34,7 @@ import SponsoredEventForm from "./CreateEvent";
 //       const filtered = allEvents.filter(event => event.category === activeMenu);
 //       setVisibleEvents(filtered);
 //     }
-//   }, [activeMenu]);
+//   }, [activeMenu, allEvents]);
 
 //   const handleMenuClick = (menuLabel: string) => {
 //     setActiveMenu(menuLabel);
@@ -81,7 +79,7 @@ import SponsoredEventForm from "./CreateEvent";
 //           </div>
 
 //           {showForm ? (
-//             <SponsoredEventForm allEvents={allEvents} setShowForm={setShowForm}  />
+//             <SponsoredEventForm allEvents={allEvents} setShowForm={setShowForm} />
 //           ) : (
 //             visibleEvents.length > 0 ? (
 //               visibleEvents.map((event, index) => <EventCard 
@@ -96,32 +94,6 @@ import SponsoredEventForm from "./CreateEvent";
 //           )}
 //         </div>
 //       </div>
-
-//       {/* Event Creation Modal */}
-//       {/* {isModalOpen && (
-//         <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center">
-//           <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-//             <h2 className="text-xl font-semibold mb-4">Create New Event</h2>
-//             <input 
-//               type="text" 
-//               placeholder="Event Name" 
-//               className="w-full p-2 border rounded mb-3"
-//             />
-//             <button 
-//               className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 transition"
-//               onClick={() => setIsModalOpen(false)}
-//             >
-//               Save Event
-//             </button>
-//             <button 
-//               className="ml-2 bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 transition"
-//               onClick={() => setIsModalOpen(false)}
-//             >
-//               Cancel
-//             </button>
-//           </div>
-//         </div>
-//       )} */}
 //     </div>
 //   );
 // };
@@ -130,8 +102,6 @@ const SponsoredEvent: React.FC = () => {
     { label: "Dashboard", path: "/" },
     { label: "Sponsored Event", path: "/sponsored-event" },
   ];
-  const [upcomingevent, setupcomingevent] = useState([]);
-
   const [activeMenu, setActiveMenu] = useState("Create Event and list");
 
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
@@ -158,7 +128,7 @@ const SponsoredEvent: React.FC = () => {
 
   const handleMenuClick = (menuLabel: string) => {
     setActiveMenu(menuLabel);
-    setSelectedEvent(null);
+    setSelectedEvent(null); // Reset selected event on menu change
   };
 
   const navigate = useNavigate();
@@ -169,6 +139,21 @@ const SponsoredEvent: React.FC = () => {
     { label: "On Going Event", onClick: () => handleMenuClick("On Going Event"), active: activeMenu === "On Going Event" },
     { label: "Completed Events", onClick: () => handleMenuClick("Completed Events"), active: activeMenu === "Completed Events" },
   ];
+
+  const renderEventDetails = (event: { title: string; location: string; category: string }) => (
+    <div className="bg-white rounded shadow p-6">
+      <button className="text-xl mb-4 hover:text-blue-500 transition" onClick={() => setSelectedEvent(null)}>
+        &#8592; Back to Events
+      </button>
+      <h3 className="text-xl font-semibold">{event.title}</h3>
+      <p><strong>Location:</strong> {event.location}</p>
+      <p><strong>Category:</strong> {event.category}</p>
+      <div className="mt-4">
+        {/* Add more event details here */}
+        <p className="text-gray-600">More details about the event can be added here.</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -182,7 +167,7 @@ const SponsoredEvent: React.FC = () => {
 
         {/* Event List or Event Detail View */}
         <div className="col-span-2 bg-white rounded shadow p-6">
-          <button className="text-xl mb-4 hover:text-blue-500 transition width: 1000px;" onClick={() => navigate(-1)}>
+          <button className="text-xl mb-4 hover:text-blue-500 transition" onClick={() => navigate(-1)}>
             &#8592;
           </button>
           <div className="flex justify-between items-center mb-4">
@@ -201,15 +186,22 @@ const SponsoredEvent: React.FC = () => {
           {showForm ? (
             <SponsoredEventForm allEvents={allEvents} setShowForm={setShowForm} />
           ) : (
-            visibleEvents.length > 0 ? (
-              visibleEvents.map((event, index) => <EventCard 
-               key={index} 
-               title={event.title} 
-               location={event.location} 
-               onClick={() => setSelectedEvent(event.title)} 
-            />)
+            selectedEvent ? (
+              // If an event is selected, render the event details
+              renderEventDetails(allEvents.find(event => event.title === selectedEvent)!)
             ) : (
-              <p className="text-gray-600 text-center">No events available.</p>
+              visibleEvents.length > 0 ? (
+                visibleEvents.map((event, index) => (
+                  <EventCard 
+                    key={index} 
+                    title={event.title} 
+                    location={event.location} 
+                    onClick={() => setSelectedEvent(event.title)} 
+                  />
+                ))
+              ) : (
+                <p className="text-gray-600 text-center">No events available.</p>
+              )
             )
           )}
         </div>
@@ -217,4 +209,6 @@ const SponsoredEvent: React.FC = () => {
     </div>
   );
 };
+//export default SponsoredEvent;
+
 export default SponsoredEvent;
