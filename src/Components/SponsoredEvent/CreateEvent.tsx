@@ -463,7 +463,13 @@ const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispat
 
   {/* Buttons */}
   <div className="flex justify-between ml-50px items-center mt-6">
-    
+  <button
+       type="button"
+       className="px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition mr-21.5rem"    //
+       onClick={handleEdit}
+     >
+       Edit Event
+     </button>
 
     <button
       disabled
@@ -637,6 +643,7 @@ const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispat
         </form>
       )}
     </div>
+    
   );
 };
 export default SponsoredEventForm
