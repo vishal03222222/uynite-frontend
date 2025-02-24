@@ -4,23 +4,30 @@ import { useNavigate } from "react-router-dom";
 //import UploadIcon  from "./UploadIcon.svg";
 import UploadImage from './UploadIcon.svg';
 
-// const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispatch<React.SetStateAction<boolean>> }> = ({ allEvents, setShowForm }) => {
+
+
+
+// const SponsoredEventForm: React.FC<{ 
+//   allEvents: any[], 
+//   setShowForm: React.Dispatch<React.SetStateAction<boolean>>,
+//   eventToEdit?: any // Optional prop for editing an event
+// }> = ({ allEvents, setShowForm, eventToEdit }) => {
 //   const navigate = useNavigate();
 
 //   // ---- Form states ----
-//   const [eventName, setEventName] = useState("");
-//   const [country, setCountry] = useState("");
-//   const [scheduleType, setScheduleType] = useState("");
-//   const [mediaType, setMediaType] = useState("Video"); // default selection
-//   const [rootPoster1, setRootPoster1] = useState<string | null>(null);
-//   const [rootPoster2, setRootPoster2] = useState<string | null>(null);
-//   const [startDate, setStartDate] = useState("");
-//   const [endDate, setEndDate] = useState("");
-//   const [termsImage, setTermsImage] = useState<string | null>(null);
+//   const [eventName, setEventName] = useState(eventToEdit?.eventName || "");
+//   const [country, setCountry] = useState(eventToEdit?.country || "");
+//   const [scheduleType, setScheduleType] = useState(eventToEdit?.scheduleType || "");
+//   const [mediaType, setMediaType] = useState(eventToEdit?.mediaType || "Video");
+//   const [rootPoster1, setRootPoster1] = useState<string | null>(eventToEdit?.rootPoster1 || null);
+//   const [rootPoster2, setRootPoster2] = useState<string | null>(eventToEdit?.rootPoster2 || null);
+//   const [startDate, setStartDate] = useState(eventToEdit?.startDate || "");
+//   const [endDate, setEndDate] = useState(eventToEdit?.endDate || "");
+//   const [termsImage, setTermsImage] = useState<string | null>(eventToEdit?.termsImage || null);
 
 //   // ---- Submission states ----
 //   const [submittedData, setSubmittedData] = useState<any | null>(null);
-//   const [isEditing, setIsEditing] = useState(true); 
+//   const [isEditing, setIsEditing] = useState(!!eventToEdit); // Set to true if eventToEdit is provided
 
 //   const handleImageChange = (
 //     e: React.ChangeEvent<HTMLInputElement>,
@@ -42,7 +49,7 @@ import UploadImage from './UploadIcon.svg';
 //     const dataToSubmit = {
 //       title: eventName,
 //       location: country,
-//       category: "Up Comming Events", // Automatically set category to "On Going Event"
+//       category: "On Going Event", // Automatically set category to "On Going Event"
 //       eventName,
 //       country,
 //       scheduleType,
@@ -55,13 +62,24 @@ import UploadImage from './UploadIcon.svg';
 //     };
 
 //     setSubmittedData(dataToSubmit);
-//     allEvents.push(dataToSubmit);
+
+//     if (eventToEdit) {
+//       // Update the existing event
+//       const index = allEvents.findIndex(event => event.title === eventToEdit.title);
+//       if (index !== -1) {
+//         allEvents[index] = dataToSubmit;
+//       }
+//     } else {
+//       // Add new event
+//       allEvents.push(dataToSubmit);
+//     }
+
 //     console.log(allEvents);
 //     setIsEditing(false); // Hide the form, show submitted data
 //   };
 
 //   const handleEdit = () => {
-//     setIsEditing(true);
+//     setIsEditing(true); // Show the form for editing
 //   };
 
 //   return (
@@ -73,86 +91,100 @@ import UploadImage from './UploadIcon.svg';
 //       >
 //         &#8592;
 //       </button>
-
+     
 //       {/* Title */}
-//       <h2 className="text-2xl font-extrabold text-gray-800 mb-4">
+//       <h2 className="ml-500px text-2xl font-extrabold text-gray-800 mb-4">
 //         Event Type: <span className="text-blue-500">Sponsored Event</span>
 //       </h2>
 
 //       {/* If data is submitted and not editing, show the summary/details */}
 //       {submittedData && !isEditing && (
-//         <div className="mb-6 border border-gray-300 rounded-md p-4 bg-gray-50">
-//           <h3 className="font-bold text-lg text-gray-700 mb-2">
-//             Submitted Event Data
+//         <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-300">
+//           {/* Header Section */}
+//           <h3 className="text-xl font-semibold text-gray-800 mb-4">
+//             <span className="align-center text-black-500">{submittedData.eventName}</span>{" "}
 //           </h3>
-//           <p>
-//             <strong>Event Name:</strong> {submittedData.eventName}
-//           </p>
-//           <p>
-//             <strong>Selected Country:</strong> {submittedData.country}
-//           </p>
-//           <p>
-//             <strong>Schedule Type:</strong> {submittedData.scheduleType}
-//           </p>
-//           <p>
-//             <strong>Media Type:</strong> {submittedData.mediaType}
-//           </p>
-//           <p>
-//             <strong>Start Date/Time:</strong> {submittedData.startDate}
-//           </p>
-//           <p>
-//             <strong>End Date/Time:</strong> {submittedData.endDate}
+
+//           {/* Country Selection */}
+//           <p className="text-gray-600 mb-2">
+//             <strong>Selected Country:</strong>{" "}
+//             <span className="text-blue-500 underline">{submittedData.country}</span>
 //           </p>
 
-//           {/* Root Poster 1 */}
-//           <div className="mt-2">
-//             <strong>Root Poster 1:</strong>
+//           <p className="text-gray-600">
+//             <strong>Schedule Type:</strong> {submittedData.scheduleType}
+//           </p>
+//           <p className="text-gray-600">
+//             <strong>Media Type:</strong> {submittedData.mediaType}
+//           </p>
+
+//           {/* Date Section */}
+//           <div className="flex items-center mt-3 text-gray-700">
+//             <p className="mr-4">
+//               <strong>From:</strong> {submittedData.startDate}
+//             </p>
+//             <p>
+//               <strong>To:</strong> {submittedData.endDate}
+//             </p>
+//           </div>
+
+//           {/* Posters Section */}
+//           <div className="mt-6">
+//             <h4 className="text-lg font-semibold text-gray-800 mb-2">Posters Display in Roots</h4>
 //             {submittedData.rootPoster1 && (
 //               <img
 //                 src={submittedData.rootPoster1}
 //                 alt="Root Poster 1"
-//                 className="mt-2 h-24 w-24 object-cover border border-gray-300"
+//                 className="max-w-full h-auto object-contain"
 //               />
 //             )}
 //           </div>
 
-//           {/* Root Poster 2 */}
-//           <div className="mt-2">
-//             <strong>Root Poster 2:</strong>
+//           <div className="mt-4">
+//             <h4 className="text-lg font-semibold text-gray-800 mb-2">Posters Display into Event</h4>
 //             {submittedData.rootPoster2 && (
 //               <img
 //                 src={submittedData.rootPoster2}
 //                 alt="Root Poster 2"
-//                 className="mt-2 h-24 w-24 object-cover border border-gray-300"
+//                 className="max-w-full h-auto object-contain"
 //               />
 //             )}
 //           </div>
 
 //           {/* Terms & Conditions Image */}
-//           <div className="mt-2">
-//             <strong>Terms & Conditions Poster:</strong>
+//           <div className="mt-6">
+//             <h4 className="text-lg font-semibold text-gray-800 mb-2">Terms & Conditions</h4>
 //             {submittedData.termsImage && (
 //               <img
 //                 src={submittedData.termsImage}
 //                 alt="Terms & Conditions Poster"
-//                 className="mt-2 h-24 w-24 object-cover border border-gray-300"
+//                 className="max-w-full h-auto object-contain"
 //               />
 //             )}
 //           </div>
 
-//           {/* Edit Button */}
-//           <button
-//             type="button"
-//             className="mt-4 px-4 py-2 bg-yellow-500 text-white font-semibold rounded-md hover:bg-yellow-600 transition"
-//             onClick={handleEdit}
-//           >
-//             Edit
-//           </button>
+//           {/* Buttons */}
+//           <div className="flex justify-between ml-50px items-center mt-6">
+//             <button
+//               type="button"
+//               className="px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition mr-21.5rem"
+//               onClick={handleEdit}
+//             >
+//               Edit Event
+//             </button>
+
+//             <button
+//               disabled
+//               className=" ml-50px px-5 py-2 bg-gray-300 text-gray-600 font-semibold rounded-lg cursor-not-allowed"
+//             >
+//               Event Created into List Successfully
+//             </button>
+//           </div>
 //         </div>
 //       )}
 
-//       {/* Show the form if we are in editing mode */}
-//       {isEditing && (
+//       {/* Show the form only if there is no submitted data or we are in editing mode */}
+//       {(!submittedData || isEditing) && (
 //         <form onSubmit={handleSubmit}>
 //           {/* Event Name */}
 //           <input
@@ -214,7 +246,10 @@ import UploadImage from './UploadIcon.svg';
 //                 htmlFor="rootPoster1-upload"
 //                 className="w-full h-full flex items-center justify-center"
 //               >
-//                 Add Image
+//                 <div style={{marginTop:"2px"}}>
+//                   <img src={UploadImage} alt="Upload" /><br />
+//                   Add Image
+//                 </div>
 //                 <input
 //                   id="rootPoster1-upload"
 //                   type="file"
@@ -236,7 +271,10 @@ import UploadImage from './UploadIcon.svg';
 //                 htmlFor="rootPoster2-upload"
 //                 className="w-full h-full flex items-center justify-center"
 //               >
-//                 Add Image
+//                 <div style={{marginTop:"2px"}}>
+//                   <img src={UploadImage} alt="Upload" /><br />
+//                   Add Image
+//                 </div>
 //                 <input
 //                   id="rootPoster2-upload"
 //                   type="file"
@@ -273,7 +311,10 @@ import UploadImage from './UploadIcon.svg';
 //                 htmlFor="termsImage-upload"
 //                 className="w-full h-full flex items-center justify-center"
 //               >
-//                 Add Image
+//                 <div style={{marginTop:"2px"}}>
+//                   <img src={UploadImage} alt="Upload" /><br />
+//                   Add Image
+//                 </div>
 //                 <input
 //                   id="termsImage-upload"
 //                   type="file"
@@ -290,7 +331,7 @@ import UploadImage from './UploadIcon.svg';
 //             type="submit"
 //             className="w-full bg-blue-500 text-white font-bold py-2 rounded-lg shadow-md hover:bg-blue-600 transition mb-2"
 //           >
-//             {submittedData ? "Update Event" : "Create Event"}
+//             {eventToEdit  ||isEditing  ? "Update Event" : "Create Event"}
 //           </button>
 
 //           <button
@@ -308,26 +349,27 @@ import UploadImage from './UploadIcon.svg';
 
 
 
-
-//secondcode
-
-const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispatch<React.SetStateAction<boolean>> }> = ({ allEvents, setShowForm }) => {
+const SponsoredEventForm: React.FC<{ 
+  allEvents: any[], 
+  setShowForm: React.Dispatch<React.SetStateAction<boolean>>,
+  eventToEdit?: any // Optional prop for editing an event
+}> = ({ allEvents, setShowForm, eventToEdit }) => {
   const navigate = useNavigate();
 
   // ---- Form states ----
-  const [eventName, setEventName] = useState("");
-  const [country, setCountry] = useState("");
-  const [scheduleType, setScheduleType] = useState("");
-  const [mediaType, setMediaType] = useState("Video"); // default selection
-  const [rootPoster1, setRootPoster1] = useState<string | null>(null);
-  const [rootPoster2, setRootPoster2] = useState<string | null>(null);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [termsImage, setTermsImage] = useState<string | null>(null);
+  const [eventName, setEventName] = useState(eventToEdit?.eventName || "");
+  const [country, setCountry] = useState(eventToEdit?.country || "");
+  const [scheduleType, setScheduleType] = useState(eventToEdit?.scheduleType || "");
+  const [mediaType, setMediaType] = useState(eventToEdit?.mediaType || "Video");
+  const [rootPoster1, setRootPoster1] = useState<string | null>(eventToEdit?.rootPoster1 || null);
+  const [rootPoster2, setRootPoster2] = useState<string | null>(eventToEdit?.rootPoster2 || null);
+  const [startDate, setStartDate] = useState(eventToEdit?.startDate || "");
+  const [endDate, setEndDate] = useState(eventToEdit?.endDate || "");
+  const [termsImage, setTermsImage] = useState<string | null>(eventToEdit?.termsImage || null);
 
   // ---- Submission states ----
   const [submittedData, setSubmittedData] = useState<any | null>(null);
-  const [isEditing, setIsEditing] = useState(true); 
+  const [isEditing, setIsEditing] = useState(!!eventToEdit); // Set to true if eventToEdit is provided
 
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -362,13 +404,24 @@ const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispat
     };
 
     setSubmittedData(dataToSubmit);
-    allEvents.push(dataToSubmit);
+
+    if (eventToEdit) {
+      // Update the existing event
+      const index = allEvents.findIndex(event => event.title === eventToEdit.title);
+      if (index !== -1) {
+        allEvents[index] = dataToSubmit;
+      }
+    } else {
+      // Add new event
+      allEvents.push(dataToSubmit);
+    }
+
     console.log(allEvents);
     setIsEditing(false); // Hide the form, show submitted data
   };
 
   const handleEdit = () => {
-    setIsEditing(true);
+    setIsEditing(true); // Show the form for editing
   };
 
   return (
@@ -382,108 +435,98 @@ const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispat
       </button>
      
       {/* Title */}
-      <h2 className=" ml-500px text-2xl font-extrabold text-gray-800 mb-4">
+      <h2 className="ml-500px text-2xl font-extrabold text-gray-800 mb-4">
         Event Type: <span className="text-blue-500">Sponsored Event</span>
       </h2>
 
       {/* If data is submitted and not editing, show the summary/details */}
       {submittedData && !isEditing && (
-        
-      
         <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-300">
-          
-  {/* Header Section */}
-  <div>
-  
-  </div>
-  <h3 className="text-xl font-semibold text-gray-800 mb-4">
-    <span className="align-center text-black-500">{submittedData.eventName}</span>{" "}
-   
-  </h3>
+          {/* Header Section */}
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+            <span className="align-center text-black-500">{submittedData.eventName}</span>{" "}
+          </h3>
 
+          {/* Country Selection */}
+          <p className="text-gray-600 mb-2">
+            <strong>Selected Country:</strong>{" "}
+            <span className="text-blue-500 underline">{submittedData.country}</span>
+          </p>
 
+          <p className="text-gray-600">
+            <strong>Schedule Type:</strong> {submittedData.scheduleType}
+          </p>
+          <p className="text-gray-600">
+            <strong>Media Type:</strong> {submittedData.mediaType}
+          </p>
 
-  {/* Country Selection */}
-  <p className="text-gray-600 mb-2">
-    <strong>Selected Country:</strong>{" "}
-    <span className="text-blue-500 underline">{submittedData.country}</span>
-  </p>
+          {/* Date Section */}
+          <div className="flex items-center mt-3 text-gray-700">
+            <p className="mr-4">
+              <strong>From:</strong> {submittedData.startDate}
+            </p>
+            <p>
+              <strong>To:</strong> {submittedData.endDate}
+            </p>
+          </div>
 
-  <p className="text-gray-600">
-    <strong>Schedule Type:</strong> {submittedData.scheduleType}
-  </p>
-  <p className="text-gray-600">
-    <strong>Media Type:</strong> {submittedData.mediaType}
-  </p>
+          {/* Posters Section */}
+          <div className="mt-6">
+            <h4 className="text-lg font-semibold text-gray-800 mb-2">Posters Display in Roots</h4>
+            {submittedData.rootPoster1 && (
+              <img
+                src={submittedData.rootPoster1}
+                alt="Root Poster 1"
+                className="max-w-full h-auto object-contain"
+              />
+            )}
+          </div>
 
-  {/* Date Section */}
-  <div className="flex items-center mt-3 text-gray-700">
-    <p className="mr-4">
-      <strong>From:</strong> {submittedData.startDate}
-    </p>
-    <p>
-      <strong>To:</strong> {submittedData.endDate}
-    </p>
-  </div>
+          <div className="mt-4">
+            <h4 className="text-lg font-semibold text-gray-800 mb-2">Posters Display into Event</h4>
+            {submittedData.rootPoster2 && (
+              <img
+                src={submittedData.rootPoster2}
+                alt="Root Poster 2"
+                className="max-w-full h-auto object-contain"
+              />
+            )}
+          </div>
 
-  {/* Posters Section */}
-  <div className="mt-6">
-    <h4 className="text-lg font-semibold text-gray-800 mb-2">Posters Display in Roots</h4>
-    {submittedData.rootPoster1 && (
-      <img
-        src={submittedData.rootPoster1}
-        alt="Root Poster 1"
-        className="max-w-full h-auto object-contain"
-      />
-    )}
-  </div>
+          {/* Terms & Conditions Image */}
+          <div className="mt-6">
+            <h4 className="text-lg font-semibold text-gray-800 mb-2">Terms & Conditions</h4>
+            {submittedData.termsImage && (
+              <img
+                src={submittedData.termsImage}
+                alt="Terms & Conditions Poster"
+                className="max-w-full h-auto object-contain"
+              />
+            )}
+          </div>
 
-  <div className="mt-4">
-    <h4 className="text-lg font-semibold text-gray-800 mb-2">Posters Display into Event</h4>
-    {submittedData.rootPoster2 && (
-      <img
-        src={submittedData.rootPoster2}
-        alt="Root Poster 2"
-        className="max-w-full h-auto object-contain"
-      />
-    )}
-  </div>
+          {/* Buttons */}
+          <div className="flex justify-between ml-50px items-center mt-6">
+            <button
+              type="button"
+              className="px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition mr-21.5rem"
+              onClick={handleEdit}
+            >
+              Edit Event
+            </button>
 
-  {/* Terms & Conditions Image */}
-  <div className="mt-6">
-    <h4 className="text-lg font-semibold text-gray-800 mb-2">Terms & Conditions</h4>
-    {submittedData.termsImage && (
-      <img
-        src={submittedData.termsImage}
-        alt="Terms & Conditions Poster"
-       className="max-w-full h-auto object-contain"
-      />
-    )}
-  </div>
-
-  {/* Buttons */}
-  <div className="flex justify-between ml-50px items-center mt-6">
-  <button
-       type="button"
-       className="px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition mr-21.5rem"    //
-       onClick={handleEdit}
-     >
-       Edit Event
-     </button>
-
-    <button
-      disabled
-      className=" ml-50px px-5 py-2 bg-gray-300 text-gray-600 font-semibold rounded-lg cursor-not-allowed"
-    >
-      Event Created into List Successfully
-    </button>
-  </div>
-</div>
-
+            <button
+              disabled
+              className=" ml-50px px-5 py-2 bg-gray-300 text-gray-600 font-semibold rounded-lg cursor-not-allowed"
+            >
+              Event Created into List Successfully
+            </button>
+          </div>
+        </div>
       )}
 
-      {/* Show the form if we are in editing mode */}
-      {isEditing && (
+      {/* Show the form only if there is no submitted data or we are in editing mode */}
+      {(!submittedData || isEditing) && (
         <form onSubmit={handleSubmit}>
           {/* Event Name */}
           <input
@@ -545,9 +588,9 @@ const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispat
                 htmlFor="rootPoster1-upload"
                 className="w-full h-full flex items-center justify-center"
               >
-               <div style={{marginTop:"2px"}}>
-                <img src={UploadImage} alt="Upload" /><br />
-                Add Image
+                <div style={{marginTop:"2px"}}>
+                  <img src={UploadImage} alt="Upload" /><br />
+                  Add Image
                 </div>
                 <input
                   id="rootPoster1-upload"
@@ -570,9 +613,9 @@ const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispat
                 htmlFor="rootPoster2-upload"
                 className="w-full h-full flex items-center justify-center"
               >
-              <div style={{marginTop:"2px"}}>
-                <img src={UploadImage} alt="Upload" /><br />
-                Add Image
+                <div style={{marginTop:"2px"}}>
+                  <img src={UploadImage} alt="Upload" /><br />
+                  Add Image
                 </div>
                 <input
                   id="rootPoster2-upload"
@@ -611,8 +654,8 @@ const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispat
                 className="w-full h-full flex items-center justify-center"
               >
                 <div style={{marginTop:"2px"}}>
-                <img src={UploadImage} alt="Upload" /><br />
-                Add Image
+                  <img src={UploadImage} alt="Upload" /><br />
+                  Add Image
                 </div>
                 <input
                   id="termsImage-upload"
@@ -630,7 +673,7 @@ const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispat
             type="submit"
             className="w-full bg-blue-500 text-white font-bold py-2 rounded-lg shadow-md hover:bg-blue-600 transition mb-2"
           >
-            {submittedData ? "Update Event" : "Create Event"}
+            {eventToEdit  ||isEditing  ? "Update Event" : "Create Event"}
           </button>
 
           <button
@@ -643,7 +686,7 @@ const SponsoredEventForm: React.FC<{ allEvents: any[], setShowForm: React.Dispat
         </form>
       )}
     </div>
-    
   );
 };
+
 export default SponsoredEventForm
