@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from "react";
 import BreadcrumbsWithFilter from "../Breadcrumbs";
 import SidebarMenu from "../SidebarMenu";
@@ -6,15 +7,11 @@ import EventCard from "../EventCard";
 import { useNavigate } from "react-router-dom";
 import SponsoredEventForm from "./CreateEvent";
 
-
-
-//now
 const SponsoredEvent: React.FC = () => {
   const breadcrumbLinks = [
     { label: "Dashboard", path: "/" },
     { label: "Sponsored Event", path: "/sponsored-event" },
   ];
-  const [upcomingevent, setupcomingevent] = useState([]);
 
   const [activeMenu, setActiveMenu] = useState("Create Event and list");
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null); // Store the selected event details
@@ -53,6 +50,20 @@ const SponsoredEvent: React.FC = () => {
     { label: "Completed Events", onClick: () => handleMenuClick("Completed Events"), active: activeMenu === "Completed Events" },
   ];
 
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>, index: number) => {
+    const newCategory = event.target.value;
+    
+    if (newCategory === "On Going Event") {
+      const confirmChange = window.confirm("Are you sure you want to change the category to On Going Event?");
+      if (!confirmChange) return;
+    }
+
+    setAllEvents((prevEvents) =>
+      prevEvents.map((ev, i) => (i === index ? { ...ev, category: newCategory } : ev))
+    );
+  };
+
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <BreadcrumbsWithFilter links={breadcrumbLinks} />
@@ -70,22 +81,14 @@ const SponsoredEvent: React.FC = () => {
           </button>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">{activeMenu}</h2>
-            {activeMenu === "Create Event and list" &&!showForm && !selectedEvent && (
-              // <button 
-              //   className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition"
-              //   onClick={() => setShowForm(true)}        
-              //   title="Click to create a new event"
-              //   id="createbutton"
-              // >
-              //   Create Event
-              // </button>
+            {activeMenu === "Create Event and list" && !showForm && !selectedEvent && (
               <button 
-  className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition"
-  onClick={() => setShowForm(true)}        
-  title="Click to create a new event"
->
-  Create Event
-</button>
+                className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition"
+                onClick={() => setShowForm(true)}        
+                title="Click to create a new event"
+              >
+                Create Event
+              </button>
             )}
           </div>
 
@@ -95,7 +98,6 @@ const SponsoredEvent: React.FC = () => {
               setShowForm={setShowForm} 
               eventToEdit={selectedEvent} // Pass the selected event to the form
             />
-            
           ) : selectedEvent ? (
             // Show event details if an event is selected
             <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-300">
@@ -199,6 +201,5 @@ const SponsoredEvent: React.FC = () => {
     </div>
   );
 };
-
 
 export default SponsoredEvent;
