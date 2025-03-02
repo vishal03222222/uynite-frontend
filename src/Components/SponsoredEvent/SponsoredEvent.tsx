@@ -65,7 +65,7 @@ const SponsoredEvent: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 p-6" style={{ marginTop: '50px' }}>
       <BreadcrumbsWithFilter links={breadcrumbLinks} />
 
       <div className="mt-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
