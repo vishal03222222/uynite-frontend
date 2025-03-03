@@ -1,8 +1,19 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "./../assets/Image.svg";
+//import { Link } from "react-router-dom";
 
 const AdminHeader: React.FC = () => {
+
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleLogout = () => {
+    // Perform logout actions (e.g., clear local storage, API call)
+    localStorage.removeItem("authToken");
+    
+    // Hide the button
+    setIsVisible(false);
+  };
   const navigate = useNavigate();
 
   const handleNavigateToDashboard = () => {
@@ -23,10 +34,28 @@ const AdminHeader: React.FC = () => {
             Uynite Admin Center
           </h1>
         </div>
+        isVisible && (
+      <button
+        onClick={handleLogout}
+        className="text-gray-600 text-sm font-medium hover:text-gray-900"
+      >
+        <Link to="/signuppage" className="text-gray-600 text-sm font-medium hover:text-gray-900">
+  Log Out
+</Link> 
+      </button>
+        )
 
-        <button className="text-gray-600 text-sm font-medium hover:text-gray-900">
+        {/* <button className="text-gray-600 text-sm font-medium hover:text-gray-900">
           Log Out
-        </button>
+        </button> */}
+      
+
+{/* <Link to="/signuppage" className="text-gray-600 text-sm font-medium hover:text-gray-900">
+  Log Out
+</Link> */}
+
+  
+
       </div>
     </header>
   );

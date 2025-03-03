@@ -7,6 +7,7 @@ import Reports from "./Components/Reports/Reports";
 import Support from "./Components/Support/Support";
 import BlockedUsers from "./Components/BlockedUsers/BlockedUsers";
 import SponsoredEventForm from "./Components/SponsoredEvent/CreateEvent";
+import Login from "./Components/Signup";
 
 
 function App() {
@@ -21,6 +22,9 @@ function App() {
         <Route path="/support" element={<Support />} />
         <Route path="/blocked-users" element={<BlockedUsers />} />
         <Route path="/create-event" element={<SponsoredEventForm />} />
+        <Route path="/signuppage" element={<Login />} />
+
+
       </Routes>
     </Router>
   );
