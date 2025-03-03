@@ -34,16 +34,15 @@ const AdminHeader: React.FC = () => {
             Uynite Admin Center
           </h1>
         </div>
-        isVisible && (
+    
       <button
-        onClick={handleLogout}
-        className="text-gray-600 text-sm font-medium hover:text-gray-900"
+       
       >
         <Link to="/signuppage" className="text-gray-600 text-sm font-medium hover:text-gray-900">
   Log Out
 </Link> 
       </button>
-        )
+        
 
         {/* <button className="text-gray-600 text-sm font-medium hover:text-gray-900">
           Log Out
